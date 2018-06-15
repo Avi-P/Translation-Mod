@@ -11,5 +11,11 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/avina/Downloads/forge-1.12.2-14.23.4.2708-universal.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="/mcp940"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
