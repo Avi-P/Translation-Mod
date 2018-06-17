@@ -17,7 +17,7 @@ public class Translator {
 		  System.out.println(word);
 	}
  
-	private String callUrlAndParseResult(String langFrom, String langTo, String word) throws Exception {
+	public String callUrlAndParseResult(String langFrom, String langTo, String word) throws Exception {
 
 		  String url = "https://translate.googleapis.com/translate_a/single?"+
 		    "client=gtx&"+
