@@ -1,6 +1,7 @@
-package main.translation.translate;
+package main.translation.client;
 
 import net.minecraft.util.text.event.HoverEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import org.lwjgl.input.Mouse;
@@ -9,6 +10,8 @@ import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.gui.GuiScreen;
 import java.util.List;
 import java.util.ArrayList;
+import main.translation.translate.Translator;
+
 
 
 public class TranslationEventHandler {

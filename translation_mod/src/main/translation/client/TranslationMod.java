@@ -1,8 +1,9 @@
-package main.translation.mod;
+package main.translation.client;
 
-import main.translation.translate.TranslationEventHandler;
+import main.translation.client.TranslationEventHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
