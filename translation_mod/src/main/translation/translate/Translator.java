@@ -9,13 +9,13 @@ import org.json.JSONArray;
 
 public class Translator {
 
-	public static void main(String[] args) throws Exception {
-
-		  Translator http = new Translator();
-		  String word = http.callUrlAndParseResult("es", "en", "Hola");
-		  
-		  System.out.println(word);
-	}
+//	public static void main(String[] args) throws Exception {
+//
+//		  Translator http = new Translator();
+//		  String word = http.callUrlAndParseResult("es", "en", "Hola");
+//		  
+//		  System.out.println(word);
+//	}
  
 	public String callUrlAndParseResult(String langFrom, String langTo, String word) throws Exception {
 
