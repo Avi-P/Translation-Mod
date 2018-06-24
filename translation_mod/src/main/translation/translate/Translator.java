@@ -1,12 +1,24 @@
 package main.translation.translate;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
+
 import org.json.JSONArray;
 
+import com.google.common.base.Optional;
+import com.optimaize.langdetect.DetectedLanguage;
+import com.optimaize.langdetect.LanguageDetector;
+import com.optimaize.langdetect.LanguageDetectorBuilder;
+import com.optimaize.langdetect.ngram.NgramExtractors;
+import com.optimaize.langdetect.profiles.*;
+import com.optimaize.langdetect.text.CommonTextObjectFactories;
+import com.optimaize.langdetect.text.TextObject;
+import com.optimaize.langdetect.text.TextObjectFactory;
 public class Translator {
 
 	public static void main(String[] args) throws Exception {
@@ -14,37 +26,74 @@ public class Translator {
 		  Translator http = new Translator();
 		  
 		  //Informal Tests
-		  String word = http.callUrlAndParseResult("en", "es", "!@#$%^&*()");
+		  String word = http.translate("!@#$%^&*()");
 		  System.out.println(word);
 		  
-		  word = http.callUrlAndParseResult("en", "es", "_-+=`~{}[]|:;'<,>.?/\\");
+		  word = http.translate("_-+=`~{}[]|:;'<,>.?/\\");
 		  System.out.println(word);  
 		  
-		  word = http.callUrlAndParseResult("en", "es", "Hi! Hi? Hi.");
+		  word = http.translate("Hi! Hi? Hi.");
 		  System.out.println(word);
 		  
-		  word = http.callUrlAndParseResult("en", "es", "Hi! Hi");
+		  word = http.translate("Hi! Hi");
 		  System.out.println(word);
 
-		  word = http.callUrlAndParseResult("en", "es", "!Hi ?Hi .Hi");
+		  word = http.translate("!Hi ?Hi .Hi");
 		  System.out.println(word);
 		  
-		  word = http.callUrlAndParseResult("en", "es", "Hello");
+		  word = http.translate("Hello");
 		  System.out.println(word);
 		  
-		  word = http.callUrlAndParseResult("en", "es", "1234567890");
+		  word = http.translate("1234567890");
 		  System.out.println(word);
 		  
-		  word = http.callUrlAndParseResult("en", "es", "?_?");
+		  word = http.translate("?_?");
 		  System.out.println(word);
 		  
-		  word = http.callUrlAndParseResult("en", "es", ">.>");
+		  word = http.translate(">.>");
+		  System.out.println(word);
+		  
+		  word = http.translate("What's up!");
+		  System.out.println(word);
+		  
+		  word = http.translate("Salut mon nom est Avinash");
+		  System.out.println(word);
+		  
+		  word = http.translate("Hallo, mein Name ist Bush");
+		  System.out.println(word);
+		  
+		  word = http.translate(word);
 		  System.out.println(word);
 		  
 		  
 	}
- 
-	public String callUrlAndParseResult(String langFrom, String langTo, String text) throws Exception {
+	
+	private List<LanguageProfile> languageProfiles;
+	private LanguageDetector languageDetector;
+	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
+	
+	public Translator() throws IOException {
+		
+		this.languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+		this.languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
+		        .withProfiles(languageProfiles)
+		        .build();
+		
+		
+	}
+	
+	public String translate(String text) throws Exception {
+		TextObject textObject = textObjectFactory.forText(text);
+		List<DetectedLanguage> lang = languageDetector.getProbabilities(textObject);
+		
+		try {
+			return callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);
+		} catch (IndexOutOfBoundsException e) {
+			return callUrlAndParseResult("en", "en", text);
+		}
+	}
+	
+	private String callUrlAndParseResult(String langFrom, String langTo, String text) throws Exception {
 
 		  String url = "https://translate.googleapis.com/translate_a/single?"+
 		    "client=gtx&"+
@@ -74,7 +123,6 @@ public class Translator {
 		  JSONArray jsonArray1 = new JSONArray(inputJson);
 		  JSONArray jsonArray2 = (JSONArray) jsonArray1.get(0);
 		  
-		  
 		  if(count == 0) {
 			  
 			  JSONArray jsonArray = (JSONArray) jsonArray2.get(0);
@@ -98,7 +146,9 @@ public class Translator {
 			  
 		  }
 		  
-		  return translatedText.toString();
+		  String translated = stringCleaner(translatedText.toString());
+		  
+		  return translated;
 	}
 	
 	private int periodCount(String text) {
@@ -122,6 +172,27 @@ public class Translator {
 		}
 		
 		return count;
+	}
+	
+	private String stringCleaner(String text) {
+		
+		int index = 0;
+		
+		if(text.charAt(index) == 60) {
+			
+			index++;
+			
+			while(text.charAt(index) != 62) {
+				
+				index++;
+				
+			}
+			
+			index++;
+		}
+		
+		return  text.substring(index, text.length());
+		
 	}
 	
 }

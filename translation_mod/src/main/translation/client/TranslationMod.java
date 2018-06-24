@@ -1,6 +1,8 @@
 package main.translation.client;
 
 
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import main.translation.client.TranslationEventHandler;
@@ -21,7 +23,7 @@ public class TranslationMod {
 	public static final Logger LOGGER = LogManager.getLogger(MODID.toUpperCase());
 	
 	@EventHandler
-    public void init(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event) throws IOException
     {
 		
 		MinecraftForge.EVENT_BUS.register(new TranslationEventHandler());

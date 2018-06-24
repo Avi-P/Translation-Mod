@@ -48,7 +48,10 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/org.json/json
 	compile files('libs/json-20180130.jar')
-	
+	compile files('libs/language-detector-0.6.jar')
+	compile files('libs/slf4j-api-1.7.25.jar')
+	compile files('libs/slf4j-simple-1.7.25.jar')
+
     // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
     // except that these dependencies get remapped to your current MCP mappings
     //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
