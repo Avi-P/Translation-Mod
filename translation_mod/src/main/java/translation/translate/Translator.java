@@ -1,4 +1,4 @@
-package main.translation.translate;
+package translation.translate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import com.google.common.base.Optional;
 import com.optimaize.langdetect.DetectedLanguage;
 import com.optimaize.langdetect.LanguageDetector;
 import com.optimaize.langdetect.LanguageDetectorBuilder;
@@ -19,6 +18,8 @@ import com.optimaize.langdetect.profiles.*;
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
 import com.optimaize.langdetect.text.TextObjectFactory;
+
+
 public class Translator {
 
 	public static void main(String[] args) throws Exception {
@@ -27,7 +28,7 @@ public class Translator {
 		  
 		  //Informal Tests
 		  String word = http.translate("!@#$%^&*()");
-		  System.out.println(word);
+		  //System.out.println(word);
 		  
 		  word = http.translate("_-+=`~{}[]|:;'<,>.?/\\");
 		  System.out.println(word);  
@@ -65,6 +66,8 @@ public class Translator {
 		  word = http.translate(word);
 		  System.out.println(word);
 		  
+		  System.out.println(http.translate("Salut mon nom est Faggot"));
+		  
 		  
 	}
 	
@@ -76,13 +79,14 @@ public class Translator {
 		
 		this.languageProfiles = new LanguageProfileReader().readAllBuiltIn();
 		this.languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
-		        .withProfiles(languageProfiles)
-		        .build();
+		        				.withProfiles(languageProfiles)
+		        				.build();
 		
 		
 	}
 	
 	public String translate(String text) throws Exception {
+		
 		TextObject textObject = textObjectFactory.forText(text);
 		List<DetectedLanguage> lang = languageDetector.getProbabilities(textObject);
 		
@@ -91,6 +95,7 @@ public class Translator {
 		} catch (IndexOutOfBoundsException e) {
 			return callUrlAndParseResult("en", "en", text);
 		}
+		
 	}
 	
 	private String callUrlAndParseResult(String langFrom, String langTo, String text) throws Exception {
@@ -121,7 +126,16 @@ public class Translator {
 	private String parseResult(int count, String inputJson) throws Exception {
   
 		  JSONArray jsonArray1 = new JSONArray(inputJson);
-		  JSONArray jsonArray2 = (JSONArray) jsonArray1.get(0);
+		  
+		  JSONArray jsonArray2;
+		  
+		  try {
+			  jsonArray2 = (JSONArray) jsonArray1.get(0);
+			  
+		  } catch(ClassCastException e) {
+			  
+			  return "Error";
+		  }
 		  
 		  if(count == 0) {
 			  
@@ -140,8 +154,7 @@ public class Translator {
 				  translatedText.append(jsonArray.get(0).toString());
 				  
 			  } catch(org.json.JSONException e) {
-				  
-				  
+				  return "Error";
 			  }
 			  
 		  }
@@ -172,6 +185,7 @@ public class Translator {
 		}
 		
 		return count;
+		
 	}
 	
 	private String stringCleaner(String text) {
