@@ -25,14 +25,19 @@ public class TranslationEventHandler {
 	@SubscribeEvent
 	public void translation(ClientChatReceivedEvent chatMessage) throws IOException {
 		
+		System.out.println("Test");
 		ITextComponent message = chatMessage.getMessage();
+		
+		System.out.println("Formatted Text: " + message.getFormattedText());
+		System.out.println("Unformatted Text: " + message.getUnformattedText());
+		System.out.println("Unformatted Component Text: " + message.getUnformattedComponentText());
 		
 		Style stylish = new Style(); 
 		
 		ITextComponent translatedMessage;
 		
 		try {
-			translatedMessage = new TextComponentString(http.translate(message.getUnformattedComponentText()));
+			translatedMessage = new TextComponentString(http.translate(message.getUnformattedText()));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return;
