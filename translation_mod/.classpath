@@ -72,8 +72,13 @@
 	<classpathentry kind="lib" path="C:/Users/avina/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar"/>
 	<classpathentry kind="lib" path="C:/Users/avina/.gradle/caches/minecraft/net/minecraftforge/forge/1.12.2-14.23.4.2707/start"/>
 	<classpathentry kind="lib" path="libs/json-20180130.jar"/>
-	<classpathentry kind="lib" path="libs/language-detector-0.6.jar" sourcepath="C:/Users/avina/Documents/Documents/Personal/language-detector-0.6-sources.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-api-1.7.25.jar" sourcepath="C:/Users/avina/Downloads/slf4j-1.7.25/slf4j-api-1.7.25-sources.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-simple-1.7.25.jar"/>
+	<classpathentry kind="lib" path="libs/language-detector-0.6.jar"/>
+	<classpathentry kind="lib" path="META-INF/libraries/json-20180130.jar"/>
+	<classpathentry kind="lib" path="META-INF/libraries/language-detector-0.6.jar" sourcepath="/language-detector"/>
+	<classpathentry kind="lib" path="META-INF/libraries/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="META-INF/libraries/slf4j-simple-1.7.25.jar"/>
+	<classpathentry kind="lib" path="META-INF/libraries/lang-detect.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

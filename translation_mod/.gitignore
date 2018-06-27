@@ -1,3 +1,15 @@
 
 /bin/
+
+
 /run/
+
+**/build/
+
+**/build/libs/
+
+.gradle\
+
+*.bin
+
+/.recommenders/**

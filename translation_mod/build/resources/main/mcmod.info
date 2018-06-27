@@ -1,12 +1,16 @@
-[{
-  "modid": "Translation Mod",
+[
+{
+  "modid": "translationmod",
   "name": "Translation Mod",
-  "description": "Allows you to translate text in chat in-game",
-  "version": "1.0.0.0",
+  "description": "Translated incoming chat messages.",
+  "version": "1.0",
   "mcversion": "1.12.2",
-  "logoFile": "",
   "url": "",
-  "updateJSON": "",
-  "authorList": ["Avi-P"],
-  "credits": "Thanks to Forge, MCP for making this possible."
-}]
+  "updateUrl": "",
+  "authorList": ["slayer"],
+  "credits": "Google",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -14,10 +17,12 @@ import com.optimaize.langdetect.DetectedLanguage;
 import com.optimaize.langdetect.LanguageDetector;
 import com.optimaize.langdetect.LanguageDetectorBuilder;
 import com.optimaize.langdetect.ngram.NgramExtractors;
-import com.optimaize.langdetect.profiles.*;
+import com.optimaize.langdetect.profiles.LanguageProfile;
+import com.optimaize.langdetect.profiles.LanguageProfileReader;
+import com.optimaize.langdetect.text.TextObjectFactory;
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
-import com.optimaize.langdetect.text.TextObjectFactory;
+
 
 
 public class Translator {
@@ -66,21 +71,21 @@ public class Translator {
 		  word = http.translate(word);
 		  System.out.println(word);
 		  
-		  System.out.println(http.translate("Salut mon nom est Faggot"));
+		  System.out.println(http.translate("Salut mon nom est Lcoal"));
 		  
 		  
 	}
 	
-	private List<LanguageProfile> languageProfiles;
-	private LanguageDetector languageDetector;
+	
+	
+	
+	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+	private LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
+			.withProfiles(languageProfiles)
+			.build();
 	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
 	
 	public Translator() throws IOException {
-		
-		this.languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-		this.languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
-		        				.withProfiles(languageProfiles)
-		        				.build();
 		
 		
 	}
@@ -153,8 +158,8 @@ public class Translator {
 				  JSONArray jsonArray = (JSONArray) jsonArray2.get(i);
 				  translatedText.append(jsonArray.get(0).toString());
 				  
-			  } catch(org.json.JSONException e) {
-				  return "Error";
+			  } catch(Exception e) {
+				  return "Error. Could not Translate.";
 			  }
 			  
 		  }
