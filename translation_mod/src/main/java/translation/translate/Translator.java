@@ -38,40 +38,40 @@ public class Translator {
 		  word = http.translate("_-+=`~{}[]|:;'<,>.?/\\");
 		  System.out.println(word);  
 		  
-		  word = http.translate("Hi! Hi? Hi.");
-		  System.out.println(word);
-		  
-		  word = http.translate("Hi! Hi");
-		  System.out.println(word);
-
-		  word = http.translate("!Hi ?Hi .Hi");
-		  System.out.println(word);
-		  
-		  word = http.translate("Hello");
-		  System.out.println(word);
-		  
-		  word = http.translate("1234567890");
-		  System.out.println(word);
-		  
-		  word = http.translate("?_?");
-		  System.out.println(word);
-		  
-		  word = http.translate(">.>");
-		  System.out.println(word);
-		  
-		  word = http.translate("What's up!");
-		  System.out.println(word);
-		  
-		  word = http.translate("Salut mon nom est Avinash");
-		  System.out.println(word);
-		  
-		  word = http.translate("Hallo, mein Name ist Bush");
-		  System.out.println(word);
-		  
-		  word = http.translate(word);
-		  System.out.println(word);
-		  
-		  System.out.println(http.translate("Salut mon nom est Lcoal"));
+//		  word = http.translate("Hi! Hi? Hi.");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("Hi! Hi");
+//		  System.out.println(word);
+//
+//		  word = http.translate("!Hi ?Hi .Hi");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("Hello");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("1234567890");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("?_?");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate(">.>");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("What's up!");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("Salut mon nom est Avinash");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("Hallo, mein Name ist Bush");
+//		  System.out.println(word);
+//		  
+//		  word = http.translate("<*Attenas> Hello");
+//		  System.out.println(word);
+//		  
+//		  System.out.println(http.translate("Salut mon nom est Lcoal"));
 		  
 		  
 	}
