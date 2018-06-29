@@ -74,8 +74,6 @@ public class Translator {
 	}
 	
 	
-	
-	
 	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
 	private LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
 			.withProfiles(languageProfiles)
@@ -122,7 +120,7 @@ public class Translator {
 		  
 		  in.close();
 		 
-		  return parseResult(periodCount(text), response.toString());
+		  return parseResult(endPunctuationCount(text), response.toString());
 	}
  
 	private String parseResult(int count, String inputJson) throws Exception {
@@ -166,7 +164,7 @@ public class Translator {
 		  return translated;
 	}
 	
-	private int periodCount(String text) {
+	private int endPunctuationCount(String text) {
 		
 		int count = 0;
 		

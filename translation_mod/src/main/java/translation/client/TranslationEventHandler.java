@@ -25,32 +25,41 @@ public class TranslationEventHandler {
 	@SubscribeEvent
 	public void translation(ClientChatReceivedEvent chatMessage) throws IOException {
 		
-		System.out.println("Test");
-		ITextComponent message = chatMessage.getMessage();
+		int indexOfColon = chatMessage.getMessage().getUnformattedText().indexOf(":");
 		
-		System.out.println("Formatted Text: " + message.getFormattedText());
-		System.out.println("Unformatted Text: " + message.getUnformattedText());
-		System.out.println("Unformatted Component Text: " + message.getUnformattedComponentText());
+		if(indexOfColon == -1) {
+			return;
+		}
 		
-		Style stylish = new Style(); 
+		ITextComponent originalComponent = chatMessage.getMessage();
+		
+		System.out.println("Formatted Text: " + originalComponent.getFormattedText());
+		System.out.println("Unformatted Text: " + originalComponent.getUnformattedText());
+		System.out.println("Unformatted Component Text: " + originalComponent.getUnformattedComponentText());
+		
+		Style hoverEventTranslation = new Style(); 
 		
 		ITextComponent translatedMessage;
 		
 		try {
-			translatedMessage = new TextComponentString(http.translate(message.getUnformattedText()));
+			translatedMessage = new TextComponentString(http.translate(originalComponent.getUnformattedText().substring(indexOfColon+1)));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return;
 		}
 		
-		stylish.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, translatedMessage));
+		hoverEventTranslation.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, translatedMessage));
 		
-		ITextComponent newMessage = new TextComponentString("");
+		ITextComponent translatedAddition = new TextComponentString("");
 		
-		newMessage.appendText(message.getUnformattedText());
-		newMessage.setStyle(stylish);
+		translatedAddition.appendText(" [T]");
+		translatedAddition.setStyle(hoverEventTranslation);
 		
-		chatMessage.setMessage(newMessage);
+		originalComponent.appendSibling(translatedAddition);
+		
+		
+		
+		chatMessage.setMessage(originalComponent);
 		
 	}
 
