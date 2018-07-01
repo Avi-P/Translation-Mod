@@ -16,11 +16,10 @@ import com.optimaize.langdetect.LanguageDetectorBuilder;
 import com.optimaize.langdetect.ngram.NgramExtractors;
 import com.optimaize.langdetect.profiles.LanguageProfile;
 import com.optimaize.langdetect.profiles.LanguageProfileReader;
+import com.optimaize.langdetect.profiles.BuiltInLanguages;
 import com.optimaize.langdetect.text.TextObjectFactory;
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
-
-
 
 public class Translator {
 
@@ -73,27 +72,27 @@ public class Translator {
 		  
 	}
 	
-	
-	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().read(BuiltInLanguages.getShortTextLanguages());
 	private LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
 			.withProfiles(languageProfiles)
 			.build();
 	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
 	
-	public Translator() throws IOException {
-		
-		
-	}
+	public Translator() throws IOException { }
 	
 	public String translate(String text) throws Exception {
 		
 		TextObject textObject = textObjectFactory.forText(text);
 		List<DetectedLanguage> lang = languageDetector.getProbabilities(textObject);
 		
+		if(lang.get(0).getLocale().getLanguage().equals("en")) {
+			return text;
+		}
+		
 		try {
 			return callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);
 		} catch (IndexOutOfBoundsException e) {
-			return callUrlAndParseResult("en", "en", text);
+			return text;
 		}
 		
 	}
@@ -130,11 +129,13 @@ public class Translator {
 		  JSONArray jsonArray2;
 		  
 		  try {
+			  
 			  jsonArray2 = (JSONArray) jsonArray1.get(0);
 			  
 		  } catch(ClassCastException e) {
 			  
-			  return "Error";
+			  return "Error. Could not translate.";
+			  
 		  }
 		  
 		  if(count == 0) {
@@ -154,14 +155,15 @@ public class Translator {
 				  translatedText.append(jsonArray.get(0).toString());
 				  
 			  } catch(Exception e) {
-				  return "Error. Could not Translate.";
+				  
+				  return "Error. Could not translate.";
+				  
 			  }
 			  
 		  }
 		  
-		  String translated = stringCleaner(translatedText.toString());
+		  return translatedText.toString();
 		  
-		  return translated;
 	}
 	
 	private int endPunctuationCount(String text) {
@@ -170,7 +172,7 @@ public class Translator {
 		
 		for(int i = 0; i < text.length(); i++) {
 			
-			if(text.charAt(i) == 46 || text.charAt(i) == 33 || text.charAt(i) == 63) {
+			if(text.charAt(i) == 46 || text.charAt(i) == 33 || text.charAt(i) == 63) {	//"." "!" "?"
 				
 				count++;
 				
@@ -188,25 +190,5 @@ public class Translator {
 		
 	}
 	
-	private String stringCleaner(String text) {
-		
-		int index = 0;
-		
-		if(text.charAt(index) == 60) {
-			
-			index++;
-			
-			while(text.charAt(index) != 62) {
-				
-				index++;
-				
-			}
-			
-			index++;
-		}
-		
-		return  text.substring(index, text.length());
-		
-	}
 	
 }

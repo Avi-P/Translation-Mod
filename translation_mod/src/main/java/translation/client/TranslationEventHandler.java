@@ -33,12 +33,6 @@ public class TranslationEventHandler {
 		
 		ITextComponent originalComponent = chatMessage.getMessage();
 		
-		System.out.println("Formatted Text: " + originalComponent.getFormattedText());
-		System.out.println("Unformatted Text: " + originalComponent.getUnformattedText());
-		System.out.println("Unformatted Component Text: " + originalComponent.getUnformattedComponentText());
-		
-		Style hoverEventTranslation = new Style(); 
-		
 		ITextComponent translatedMessage;
 		
 		try {
@@ -48,6 +42,8 @@ public class TranslationEventHandler {
 			return;
 		}
 		
+		Style hoverEventTranslation = new Style(); 
+		
 		hoverEventTranslation.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, translatedMessage));
 		
 		ITextComponent translatedAddition = new TextComponentString("");
@@ -56,8 +52,6 @@ public class TranslationEventHandler {
 		translatedAddition.setStyle(hoverEventTranslation);
 		
 		originalComponent.appendSibling(translatedAddition);
-		
-		
 		
 		chatMessage.setMessage(originalComponent);
 		
