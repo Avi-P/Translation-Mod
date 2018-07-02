@@ -76,7 +76,7 @@ public class Translator {
 	private LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
 			.withProfiles(languageProfiles)
 			.build();
-	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
+	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingShortCleanText();
 	
 	public Translator() throws IOException { }
 	
@@ -86,13 +86,13 @@ public class Translator {
 		List<DetectedLanguage> lang = languageDetector.getProbabilities(textObject);
 		
 		if(lang.get(0).getLocale().getLanguage().equals("en")) {
-			return text;
+			return "";
 		}
 		
 		try {
 			return callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);
 		} catch (IndexOutOfBoundsException e) {
-			return text;
+			return "Error.";
 		}
 		
 	}

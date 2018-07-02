@@ -33,22 +33,29 @@ public class TranslationEventHandler {
 		
 		ITextComponent originalComponent = chatMessage.getMessage();
 		
-		ITextComponent translatedMessage;
+		String translatedMsg;
 		
 		try {
-			translatedMessage = new TextComponentString(http.translate(originalComponent.getUnformattedText().substring(indexOfColon+1)));
+			
+			translatedMsg = http.translate(originalComponent.getUnformattedText().substring(indexOfColon+1));
+			
 		} catch (Exception e1) {
+			
 			e1.printStackTrace();
+			return;
+			
+		}
+		
+		if(translatedMsg.equals("")) {
 			return;
 		}
 		
-		Style hoverEventTranslation = new Style(); 
+		ITextComponent translatedMessage = new TextComponentString(translatedMsg);
 		
+		Style hoverEventTranslation = new Style(); 
 		hoverEventTranslation.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, translatedMessage));
 		
-		ITextComponent translatedAddition = new TextComponentString("");
-		
-		translatedAddition.appendText(" [T]");
+		ITextComponent translatedAddition = new TextComponentString(" [T]");
 		translatedAddition.setStyle(hoverEventTranslation);
 		
 		originalComponent.appendSibling(translatedAddition);
