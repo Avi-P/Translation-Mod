@@ -18,6 +18,13 @@ import com.optimaize.langdetect.profiles.LanguageProfile;
 import com.optimaize.langdetect.profiles.LanguageProfileReader;
 import com.optimaize.langdetect.profiles.BuiltInLanguages;
 import com.optimaize.langdetect.text.TextObjectFactory;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.HoverEvent;
+
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
 
@@ -78,6 +85,9 @@ public class Translator {
 			.build();
 	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingShortCleanText();
 	
+	private String translatedMessage = "";
+	
+	
 	public Translator() throws IOException { }
 	
 	public String translate(String text) throws Exception {
@@ -89,15 +99,22 @@ public class Translator {
 			return "";
 		}
 		
-		try {
-			return callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);
-		} catch (IndexOutOfBoundsException e) {
-			return "Error.";
-		}
+		new Thread(() -> {
+			try {
+				callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);
+				
+			} catch (Exception e) {
+				setTranslatedMessage("Error.");
+			}
+		}).start();
+			
+		
+		return translatedMessage;
+
 		
 	}
 	
-	private String callUrlAndParseResult(String langFrom, String langTo, String text) throws Exception {
+	 public void callUrlAndParseResult(String langFrom, String langTo, String text) throws Exception {
 
 		  String url = "https://translate.googleapis.com/translate_a/single?"+
 		    "client=gtx&"+
@@ -119,7 +136,19 @@ public class Translator {
 		  
 		  in.close();
 		 
-		  return parseResult(endPunctuationCount(text), response.toString());
+		  setTranslatedMessage(parseResult(endPunctuationCount(text), response.toString()));
+		  
+		  //Funky Business
+		  
+		  ITextComponent translatedMsg = new TextComponentString(translatedMessage);
+		  
+		  Style hoverEventTranslation = new Style(); 
+			hoverEventTranslation.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, translatedMsg));
+			
+		  ITextComponent translatedAddition = new TextComponentString("[T]");
+		  translatedAddition.setStyle(hoverEventTranslation);
+			
+		  Minecraft.getMinecraft().player.sendMessage(translatedAddition);
 	}
  
 	private String parseResult(int count, String inputJson) throws Exception {
@@ -162,6 +191,8 @@ public class Translator {
 			  
 		  }
 		  
+		  System.out.println("Parse Result - " + translatedText.toString());
+		  
 		  return translatedText.toString();
 		  
 	}
@@ -188,6 +219,14 @@ public class Translator {
 		
 		return count;
 		
+	}
+
+	public String getTranslatedMessage() {
+		return translatedMessage;
+	}
+
+	public void setTranslatedMessage(String translatedMessage) {
+		this.translatedMessage = translatedMessage;
 	}
 	
 	
