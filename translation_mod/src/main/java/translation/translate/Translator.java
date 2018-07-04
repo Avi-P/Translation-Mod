@@ -18,13 +18,6 @@ import com.optimaize.langdetect.profiles.LanguageProfile;
 import com.optimaize.langdetect.profiles.LanguageProfileReader;
 import com.optimaize.langdetect.profiles.BuiltInLanguages;
 import com.optimaize.langdetect.text.TextObjectFactory;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.event.HoverEvent;
-
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
 
@@ -84,9 +77,7 @@ public class Translator {
 			.withProfiles(languageProfiles)
 			.build();
 	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingShortCleanText();
-	
 	private String translatedMessage = "";
-	
 	
 	public Translator() throws IOException { }
 	
@@ -99,17 +90,16 @@ public class Translator {
 			return "";
 		}
 		
-		new Thread(() -> {
-			try {
-				callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);
-				
-			} catch (Exception e) {
-				setTranslatedMessage("Error.");
-			}
-		}).start();
-			
 		
-		return translatedMessage;
+		try {
+			callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);			
+		} catch (Exception e) {
+			return "Error. Could not translate.";
+		}
+	
+		String finalMessage = "[" + lang.get(0).getLocale().getLanguage() + " -> " + "en" + "]: " + translatedMessage;
+		
+		return finalMessage;
 
 		
 	}
@@ -137,18 +127,7 @@ public class Translator {
 		  in.close();
 		 
 		  setTranslatedMessage(parseResult(endPunctuationCount(text), response.toString()));
-		  
-		  //Funky Business
-		  
-		  ITextComponent translatedMsg = new TextComponentString(translatedMessage);
-		  
-		  Style hoverEventTranslation = new Style(); 
-			hoverEventTranslation.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, translatedMsg));
-			
-		  ITextComponent translatedAddition = new TextComponentString("[T]");
-		  translatedAddition.setStyle(hoverEventTranslation);
-			
-		  Minecraft.getMinecraft().player.sendMessage(translatedAddition);
+		 
 	}
  
 	private String parseResult(int count, String inputJson) throws Exception {
@@ -158,37 +137,25 @@ public class Translator {
 		  JSONArray jsonArray2;
 		  
 		  try {
-			  
 			  jsonArray2 = (JSONArray) jsonArray1.get(0);
-			  
 		  } catch(ClassCastException e) {
-			  
 			  return "Error. Could not translate.";
-			  
 		  }
 		  
 		  if(count == 0) {
-			  
 			  JSONArray jsonArray = (JSONArray) jsonArray2.get(0);
 			  return jsonArray.get(0).toString();
-			  
 		  }
 		  
 		  StringBuffer translatedText = new StringBuffer();
 		  
 		  for(int i = 0; i < count; i++) {
-			  
 			  try {
-				  
 				  JSONArray jsonArray = (JSONArray) jsonArray2.get(i);
 				  translatedText.append(jsonArray.get(0).toString());
-				  
 			  } catch(Exception e) {
-				  
-				  return "Error. Could not translate.";
-				  
+				  return "Error. Could not translate.";  
 			  }
-			  
 		  }
 		  
 		  System.out.println("Parse Result - " + translatedText.toString());
@@ -202,19 +169,13 @@ public class Translator {
 		int count = 0;
 		
 		for(int i = 0; i < text.length(); i++) {
-			
 			if(text.charAt(i) == 46 || text.charAt(i) == 33 || text.charAt(i) == 63) {	//"." "!" "?"
-				
-				count++;
-				
+				count++;	
 			}
-			
 		}
 		
 		if(text.charAt(text.length()-1) != 46 && text.charAt(text.length()-1) != 33 && text.charAt(text.length()-1) != 63) {
-			
 			count++;
-			
 		}
 		
 		return count;
