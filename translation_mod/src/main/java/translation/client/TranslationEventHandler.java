@@ -27,17 +27,11 @@ public class TranslationEventHandler {
 	@SubscribeEvent
 	public void translation(ClientChatReceivedEvent chatMessage) throws IOException {
 		
-		int indexOfDelimiter = chatMessage.getMessage().getUnformattedText().indexOf(ClientSettings.delimiter);
-		
-		if(indexOfDelimiter == -1) {
-			return;
-		}
-		
 		ITextComponent originalComponent = chatMessage.getMessage();
 		
 		new Thread(() -> {
 			try {
-				String outputMsg = http.translate(originalComponent.getUnformattedText().substring(indexOfDelimiter+1));
+				String outputMsg = http.translate(originalComponent.getUnformattedText());
 				
 				if(outputMsg.equals("")) {
 					return;

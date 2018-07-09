@@ -88,7 +88,13 @@ public class Translator {
 	
 	public String translate(String text) throws Exception {
 		
-		TextObject textObject = textObjectFactory.forText(text);
+		String inputText = parseInputString(text);
+		
+		if(inputText.equals("")) {
+			return inputText;
+		}
+		
+		TextObject textObject = textObjectFactory.forText(inputText);
 		List<DetectedLanguage> lang = languageDetector.getProbabilities(textObject);
 		
 		if(lang.get(0).getLocale().getLanguage().equals(ClientSettings.mainLanguage)) {
@@ -97,7 +103,7 @@ public class Translator {
 		
 		
 		try {
-			callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), ClientSettings.mainLanguage, text);			
+			callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), ClientSettings.mainLanguage, inputText);			
 		} catch (Exception e) {
 			return "Error. Could not translate.";
 		}
@@ -185,6 +191,16 @@ public class Translator {
 		
 		return count;
 		
+	}
+	
+	private String parseInputString(String inputText) {
+		int indexOfDelimiter = inputText.indexOf(ClientSettings.delimiter);
+		
+		if(indexOfDelimiter == -1) {
+			return "";
+		}
+		
+		return inputText.substring(indexOfDelimiter+1);
 	}
 
 	public String getTranslatedMessage() {
