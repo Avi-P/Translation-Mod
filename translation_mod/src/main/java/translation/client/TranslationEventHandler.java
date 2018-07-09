@@ -11,7 +11,9 @@ import net.minecraft.util.text.event.HoverEvent;
 
 import java.io.IOException;
 
+import translation.settings.ClientSettings;
 import translation.translate.Translator;
+
 
 
 public class TranslationEventHandler {
@@ -25,9 +27,9 @@ public class TranslationEventHandler {
 	@SubscribeEvent
 	public void translation(ClientChatReceivedEvent chatMessage) throws IOException {
 		
-		int indexOfColon = chatMessage.getMessage().getUnformattedText().indexOf(":");
+		int indexOfDelimiter = chatMessage.getMessage().getUnformattedText().indexOf(ClientSettings.delimiter);
 		
-		if(indexOfColon == -1) {
+		if(indexOfDelimiter == -1) {
 			return;
 		}
 		
@@ -35,7 +37,7 @@ public class TranslationEventHandler {
 		
 		new Thread(() -> {
 			try {
-				String outputMsg = http.translate(originalComponent.getUnformattedText().substring(indexOfColon+1));
+				String outputMsg = http.translate(originalComponent.getUnformattedText().substring(indexOfDelimiter+1));
 				
 				if(outputMsg.equals("")) {
 					return;

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -20,6 +21,8 @@ import com.optimaize.langdetect.profiles.BuiltInLanguages;
 import com.optimaize.langdetect.text.TextObjectFactory;
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
+
+import translation.settings.ClientSettings;
 
 public class Translator {
 
@@ -72,11 +75,13 @@ public class Translator {
 		  
 	}
 	
-	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().read(BuiltInLanguages.getShortTextLanguages());
+	
+	private List<String> Languages =  Arrays.asList("en", "es", "fr");
+	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().read(Languages);
 	private LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
 			.withProfiles(languageProfiles)
 			.build();
-	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingShortCleanText();
+	private TextObjectFactory textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
 	private String translatedMessage = "";
 	
 	public Translator() throws IOException { }
@@ -86,18 +91,18 @@ public class Translator {
 		TextObject textObject = textObjectFactory.forText(text);
 		List<DetectedLanguage> lang = languageDetector.getProbabilities(textObject);
 		
-		if(lang.get(0).getLocale().getLanguage().equals("en")) {
+		if(lang.get(0).getLocale().getLanguage().equals(ClientSettings.mainLanguage)) {
 			return "";
 		}
 		
 		
 		try {
-			callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), "en", text);			
+			callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), ClientSettings.mainLanguage, text);			
 		} catch (Exception e) {
 			return "Error. Could not translate.";
 		}
 	
-		String finalMessage = "[" + lang.get(0).getLocale().getLanguage() + " -> " + "en" + "]: " + translatedMessage;
+		String finalMessage = "[" + lang.get(0).getLocale().getLanguage() + " -> " + ClientSettings.mainLanguage + "]: " + translatedMessage;
 		
 		return finalMessage;
 
