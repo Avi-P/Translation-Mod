@@ -1,6 +1,7 @@
 package translation.client;
 
 import translation.settings.ClientSettings;
+import translation.settings.ConfigChangeEvent;
 
 import java.io.IOException;
 
@@ -32,6 +33,7 @@ public class TranslationMod {
 		
 		ConfigManager.sync(MODID, Type.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(new TranslationEventHandler());
+		MinecraftForge.EVENT_BUS.register(new ConfigChangeEvent());
 		
     }
 	
