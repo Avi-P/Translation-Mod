@@ -2,6 +2,7 @@ package translation.client;
 
 import translation.settings.ClientSettings;
 import translation.settings.ConfigChangeEvent;
+import translation.settings.SettingParser;
 
 import java.io.IOException;
 
@@ -22,21 +23,23 @@ public class TranslationMod {
 	public static final String Version = "1.0";
 	public static final String acceptedMinecraftVersion = "1.12.2";
 	
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
     {
-        MinecraftForge.EVENT_BUS.register(new ClientSettings());
+		
+		MinecraftForge.EVENT_BUS.register(new ClientSettings());
+		ConfigManager.sync(MODID, Type.INSTANCE);
+		SettingParser.configSetup();
+		
     }
 	
 	@EventHandler
     public void init(FMLInitializationEvent event) throws IOException
     {
 		
-		ConfigManager.sync(MODID, Type.INSTANCE);
-		MinecraftForge.EVENT_BUS.register(new TranslationEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ConfigChangeEvent());
+		MinecraftForge.EVENT_BUS.register(new TranslationEventHandler());
 		
     }
-	
-	
 	
 }

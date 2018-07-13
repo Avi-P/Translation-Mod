@@ -10,9 +10,13 @@ public class ConfigChangeEvent {
 	
 	@SubscribeEvent
 	public void onConfigChangedEvent(OnConfigChangedEvent event) {
+		
 		if (event.getModID().equals(TranslationMod.MODID)) {
 	            ConfigManager.sync(TranslationMod.MODID, Type.INSTANCE);
 		}
+		
+		SettingParser.configSetup();
+		
 	}
 	 
 }

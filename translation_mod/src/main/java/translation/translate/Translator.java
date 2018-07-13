@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -22,62 +21,11 @@ import com.optimaize.langdetect.text.TextObjectFactory;
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
 
-import translation.settings.ClientSettings;
+import translation.settings.SettingParser;
 
 public class Translator {
-
-	public static void main(String[] args) throws Exception {
-
-		  Translator http = new Translator();
-		  
-		  //Informal Tests
-		  String word = http.translate("!@#$%^&*()");
-		  //System.out.println(word);
-		  
-		  word = http.translate("_-+=`~{}[]|:;'<,>.?/\\");
-		  System.out.println(word);  
-		  
-//		  word = http.translate("Hi! Hi? Hi.");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("Hi! Hi");
-//		  System.out.println(word);
-//
-//		  word = http.translate("!Hi ?Hi .Hi");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("Hello");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("1234567890");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("?_?");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate(">.>");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("What's up!");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("Salut mon nom est Avinash");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("Hallo, mein Name ist Bush");
-//		  System.out.println(word);
-//		  
-//		  word = http.translate("<*Attenas> Hello");
-//		  System.out.println(word);
-//		  
-//		  System.out.println(http.translate("Salut mon nom est Lcoal"));
-		  
-		  
-	}
 	
-	
-	private List<String> Languages =  Arrays.asList("en", "es", "fr");
-	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().read(Languages);
+	private List<LanguageProfile> languageProfiles = new LanguageProfileReader().read(SettingParser.Languages);
 	private LanguageDetector languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
 			.withProfiles(languageProfiles)
 			.build();
@@ -97,22 +45,21 @@ public class Translator {
 		TextObject textObject = textObjectFactory.forText(inputText);
 		List<DetectedLanguage> lang = languageDetector.getProbabilities(textObject);
 		
-		if(lang.get(0).getLocale().getLanguage().equals(ClientSettings.mainLanguage)) {
+		if(lang.get(0).getLocale().getLanguage().equals(SettingParser.mainLanguage)) {
 			return "";
 		}
 		
 		
 		try {
-			callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), ClientSettings.mainLanguage, inputText);			
+			callUrlAndParseResult(lang.get(0).getLocale().getLanguage(), SettingParser.mainLanguage, inputText);			
 		} catch (Exception e) {
 			return "Error. Could not translate.";
 		}
 	
-		String finalMessage = "[" + lang.get(0).getLocale().getLanguage() + " -> " + ClientSettings.mainLanguage + "]: " + translatedMessage;
+		String finalMessage = "[" + lang.get(0).getLocale().getLanguage() + " -> " + SettingParser.mainLanguage + "]: " + translatedMessage;
 		
 		return finalMessage;
-
-		
+	
 	}
 	
 	 public void callUrlAndParseResult(String langFrom, String langTo, String text) throws Exception {
@@ -169,8 +116,6 @@ public class Translator {
 			  }
 		  }
 		  
-		  System.out.println("Parse Result - " + translatedText.toString());
-		  
 		  return translatedText.toString();
 		  
 	}
@@ -194,7 +139,7 @@ public class Translator {
 	}
 	
 	private String parseInputString(String inputText) {
-		int indexOfDelimiter = inputText.indexOf(ClientSettings.delimiter);
+		int indexOfDelimiter = inputText.indexOf(SettingParser.delimiter);
 		
 		if(indexOfDelimiter == -1) {
 			return "";
@@ -210,6 +155,5 @@ public class Translator {
 	public void setTranslatedMessage(String translatedMessage) {
 		this.translatedMessage = translatedMessage;
 	}
-	
 	
 }
