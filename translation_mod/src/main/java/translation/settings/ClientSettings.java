@@ -11,7 +11,8 @@ import translation.client.TranslationMod;
 public class ClientSettings {
 	
 	@Name("Language you want texts to be translated into")
-	@Comment("Enter in a two-letter ISO 639-1 Language Code")
+	@Comment({"Enter in a two-letter ISO 639-1 Language Code",
+			"Supported Codes: cs da de en es fi fr id it nl no pl pt ro sv tr vi"})
 	public static String mainLanguage = "en"; 
 	
 	@Name("Languages you want translation from")
