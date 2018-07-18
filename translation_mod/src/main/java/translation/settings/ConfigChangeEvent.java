@@ -8,6 +8,11 @@ import translation.client.TranslationMod;
 
 public class ConfigChangeEvent {
 	
+	/*
+	 * Resyncs the config when the user changes something.
+	 * Also calls configSetup() in SettingParser so that
+	 * the new config is parsed again. 
+	 */
 	@SubscribeEvent
 	public void onConfigChangedEvent(OnConfigChangedEvent event) {
 		
@@ -15,7 +20,7 @@ public class ConfigChangeEvent {
 	            ConfigManager.sync(TranslationMod.MODID, Type.INSTANCE);
 		}
 		
-		SettingParser.configSetup();
+		SettingParser.configSetup();	//Parses new config data to handle any errors
 		
 	}
 	 

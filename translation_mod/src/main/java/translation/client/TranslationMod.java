@@ -23,6 +23,13 @@ public class TranslationMod {
 	public static final String Version = "1.0";
 	public static final String acceptedMinecraftVersion = "1.12.2";
 	
+	/*
+	 * During PreInitialization, the config is synced up.
+	 * This is needed because the language files needed 
+	 * for language detection is only loaded up once
+	 * a client session. Also the config data is
+	 * parsed to prevent errors.
+	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
     {
@@ -33,6 +40,10 @@ public class TranslationMod {
 		
     }
 	
+	/*
+	 * This starts the actual event handler that makes up
+	 * a large part of this Mod and a config sync event handler.
+	 */
 	@EventHandler
     public void init(FMLInitializationEvent event) throws IOException
     {

@@ -12,6 +12,13 @@ import translation.translate.Translator;
 
 public class TranslationEventHandler {
 	
+	/*
+	 * We use a single instance so we don't have to load
+	 * up language files for language detection every time.
+	 * Benefit: Faster/Better performance
+	 * Trade Off: Have to restart client if user wants to
+	 * 			  include more languages for detection
+	 */
 	private Translator http;
 	
 	public TranslationEventHandler() throws IOException{
@@ -23,33 +30,39 @@ public class TranslationEventHandler {
 		
 		ITextComponent originalComponent = chatMessage.getMessage();
 		
+		/*
+		 * New thread is used to overcome the blocking function
+		 * when getting data back from server. This is done
+		 * because Minecraft is single-thread based.
+		 */
 		new Thread(() -> {
 			try {
 				String outputMsg = http.translate(originalComponent.getUnformattedText());
 				
-				if(outputMsg.equals("")) {
+				if(outputMsg.equals("")) {	//This case indicates that nothing should be outputted to client
 					return;
 				}
 				
 				outputMessage(outputMsg);
-				
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				e1.printStackTrace();	//Prints to Minecraft logs if anything goes wrong
 				return;
-			
 			}
 		}).start();
 			
 		
 	}
 
+	/*
+	 * Outputs the translated text to the client
+	 */
 	public void outputMessage(String incomingText) {
 		
 		String outputText = "[Translation Mod]" + incomingText;
 		
 		ITextComponent outputComponent = new TextComponentString(outputText);
 		 
-		Minecraft.getMinecraft().player.sendMessage(outputComponent);
+		Minecraft.getMinecraft().player.sendMessage(outputComponent);	//Outputs to client
 		
 	}
 	

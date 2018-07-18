@@ -2,13 +2,13 @@
 {
   "modid": "translationmod",
   "name": "Translation Mod",
-  "description": "Translated incoming chat messages.",
+  "description": "Translates incoming chat messages and outputs the translation into chat",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["slayer"],
-  "credits": "Google",
+  "authorList": ["slayersource"],
+  "credits": "Google for Google Translate, Optimaize for the language detection library, Forge for making this Mod possible, and Mojang for Minecraft",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
