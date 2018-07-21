@@ -124,5 +124,5 @@ public class SettingParser {
 		return false;
 	}
 	
-	
+
 }

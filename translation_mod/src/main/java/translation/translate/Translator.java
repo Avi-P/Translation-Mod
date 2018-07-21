@@ -43,7 +43,7 @@ public class Translator {
 	 * outputted in the user's main language. If any errors happen,
 	 * an error message is returned.
 	 */
-	public String translate(String text) throws Exception {
+	public String autoTranslate(String text) throws Exception {
 		
 		String inputText = parseInputString(text);
 		
@@ -68,6 +68,27 @@ public class Translator {
 		
 		return finalMessage;
 	
+	}
+	
+	/*
+	 * Used when user knows what is the input language. Doesn't parse
+	 * string prior to translation.
+	 */
+	public String customTranslate(String text, String inputLang, String outputLang) throws Exception {	
+		
+		if(text.equals("")) {	//Handles empty string being passed
+			return text;
+		}
+		
+		try {	//Handles any error that happens when requesting to server
+			callUrlAndParseResult(inputLang, outputLang, text);	//Uses highest probability language detected
+		} catch (Exception e) {
+			return "Error. Could not translate.";
+		}
+	
+		String finalMessage = "[" + inputLang + " -> " + outputLang + "]: " + translatedMessage;	//Formatted message
+	
+		return finalMessage;
 	}
 	
 	 /* 
@@ -100,7 +121,7 @@ public class Translator {
 		 
 		  setTranslatedMessage(parseResult(endPunctuationCount(text), response.toString()));
 		 
-	}
+	} 
  
 	 /*
 	  *  Due to how JSON returned is formatted, we must parse it to

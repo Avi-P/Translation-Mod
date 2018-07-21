@@ -19,10 +19,10 @@ public class TranslationEventHandler {
 	 * Trade Off: Have to restart client if user wants to
 	 * 			  include more languages for detection
 	 */
-	private Translator http;
+	private static Translator http;	//Static so it can be used by Translate Command
 	
 	public TranslationEventHandler() throws IOException{
-		this.http = new Translator();
+		TranslationEventHandler.http = new Translator();
 	}
 	
 	@SubscribeEvent
@@ -37,7 +37,7 @@ public class TranslationEventHandler {
 		 */
 		new Thread(() -> {
 			try {
-				String outputMsg = http.translate(originalComponent.getUnformattedText());
+				String outputMsg = http.autoTranslate(originalComponent.getUnformattedText());
 				
 				if(outputMsg.equals("")) {	//This case indicates that nothing should be outputted to client
 					return;
@@ -56,14 +56,18 @@ public class TranslationEventHandler {
 	/*
 	 * Outputs the translated text to the client
 	 */
-	public void outputMessage(String incomingText) {
+	public static void outputMessage(String incomingText) {
 		
-		String outputText = "[Translation Mod]" + incomingText;
+		String outputText = "[Translation Mod] " + incomingText;
 		
 		ITextComponent outputComponent = new TextComponentString(outputText);
 		 
 		Minecraft.getMinecraft().player.sendMessage(outputComponent);	//Outputs to client
 		
+	}
+	
+	public static Translator getHttp() {	//Accessor method for http
+		return http;
 	}
 	
 }

@@ -30,4 +30,5 @@ public class ClientSettings {
 			  "A single character is only accepted"})
 	public static String delimiter = ">";
 	
+	
 }

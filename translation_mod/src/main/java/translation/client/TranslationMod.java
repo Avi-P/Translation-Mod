@@ -1,11 +1,13 @@
 package translation.client;
 
+import translation.commands.TranslateCommand;
 import translation.settings.ClientSettings;
 import translation.settings.ConfigChangeEvent;
 import translation.settings.SettingParser;
 
 import java.io.IOException;
 
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
@@ -15,7 +17,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 
-@Mod(modid = TranslationMod.MODID, name = TranslationMod.NAME, version = TranslationMod.Version, useMetadata = true)
+@Mod(modid = TranslationMod.MODID, name = TranslationMod.NAME, version = TranslationMod.Version, useMetadata = true, canBeDeactivated = true)
 public class TranslationMod {
 	
 	public static final String MODID = "translationmod";
@@ -47,7 +49,7 @@ public class TranslationMod {
 	@EventHandler
     public void init(FMLInitializationEvent event) throws IOException
     {
-		
+		ClientCommandHandler.instance.registerCommand(new TranslateCommand());
 		MinecraftForge.EVENT_BUS.register(new ConfigChangeEvent());
 		MinecraftForge.EVENT_BUS.register(new TranslationEventHandler());
 		
