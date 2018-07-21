@@ -30,5 +30,8 @@ public class ClientSettings {
 			  "A single character is only accepted"})
 	public static String delimiter = ">";
 	
+	@Name("Translations Activated")
+	@Comment("Toggle for whether requests should be sent to server")
+	public static boolean activated = true;
 	
 }

@@ -10,6 +10,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import translation.client.TranslationEventHandler;
+import translation.settings.SettingParser;
 
 public class TranslateCommand implements ICommand {
 	
@@ -42,6 +43,12 @@ public class TranslateCommand implements ICommand {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		// TODO Auto-generated method stub
+		if(SettingParser.toggle == false) {	//Blocks translations from happening
+			TranslationEventHandler.outputMessage("Translations are currently disabled. Enable in Mod Settings");
+			return;
+		}
+		
+		
 		new Thread(() -> {	//New thread to overcome the blocking function when querying the server
 			try {
 

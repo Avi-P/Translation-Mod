@@ -10,6 +10,7 @@ public class SettingParser {
 	public static String mainLanguage;
 	public static List<String> Languages = new ArrayList<String>();
 	public static String delimiter;
+	public static boolean toggle;
 	
 	/*
 	 * Calls functions that will properly handle problems in the config
@@ -18,6 +19,7 @@ public class SettingParser {
 		mainLanguageParser();
 		translateLanguageParser();
 		delimiterParser();
+		toggleParser();
 	}
 		
 	/*
@@ -124,5 +126,7 @@ public class SettingParser {
 		return false;
 	}
 	
-
+	private static void toggleParser() {
+		toggle = ClientSettings.activated;
+	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.util.text.TextComponentString;
 import java.io.IOException;
 
 import translation.translate.Translator;
+import translation.settings.SettingParser;
 
 public class TranslationEventHandler {
 	
@@ -27,6 +28,10 @@ public class TranslationEventHandler {
 	
 	@SubscribeEvent
 	public void translation(ClientChatReceivedEvent chatMessage) throws IOException {
+		
+		if(SettingParser.toggle == false) {	//Blocks real-time translation from happening
+			return;
+		}
 		
 		ITextComponent originalComponent = chatMessage.getMessage();
 		
