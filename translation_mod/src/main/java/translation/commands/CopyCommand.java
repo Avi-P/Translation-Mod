@@ -3,6 +3,7 @@ package translation.commands;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package translation.commands;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
