@@ -1,5 +1,6 @@
 package translation.client;
 
+import translation.commands.CopyCommand;
 import translation.commands.TranslateCommand;
 import translation.settings.ClientSettings;
 import translation.settings.ConfigChangeEvent;
@@ -50,6 +51,7 @@ public class TranslationMod {
     public void init(FMLInitializationEvent event) throws IOException
     {
 		ClientCommandHandler.instance.registerCommand(new TranslateCommand());
+		ClientCommandHandler.instance.registerCommand(new CopyCommand());
 		MinecraftForge.EVENT_BUS.register(new ConfigChangeEvent());
 		MinecraftForge.EVENT_BUS.register(new TranslationEventHandler());
 		

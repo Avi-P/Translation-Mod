@@ -10,9 +10,16 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import translation.client.TranslationEventHandler;
-import translation.settings.SettingParser;
 
+/*
+ * This command is used to that user can translate message
+ * through the Minecraft chat. User enters input language,
+ * output language, and text to be translated. Out comes
+ * translated text.
+ */
 public class TranslateCommand implements ICommand {
+	
+	private static String translatedMessage = "";	//Static so that Copy Command can access
 	
 	@Override
 	public int compareTo(ICommand arg0) {
@@ -62,14 +69,14 @@ public class TranslateCommand implements ICommand {
 				
 				String toBeTranslated = text.toString();	//Final text to be translated
 			
-				String outputMsg = TranslationEventHandler.getHttp().customTranslate(toBeTranslated, inputLanguage, outputLanguage);
+				translatedMessage = TranslationEventHandler.getHttp().customTranslate(toBeTranslated, inputLanguage, outputLanguage);
 				
-				if(outputMsg.equals("")) {	//This case indicates that nothing should be outputted to client
+				if(translatedMessage.equals("")) {	//This case indicates that nothing should be outputted to client
 					return;
 				}
 				
 				TranslationEventHandler.outputMessage("[Entered Text] " + toBeTranslated);	//Outputs original text
-				TranslationEventHandler.outputMessage(outputMsg);	//Outputs the translated text
+				TranslationEventHandler.outputMessage(translatedMessage);	//Outputs the translated text
 				return;
 				
 			} catch (Exception e1) {
@@ -98,7 +105,7 @@ public class TranslateCommand implements ICommand {
 		return false;
 	}
 
-	private static boolean binarySearch(String languageCode) {
+	private static boolean binarySearch(String languageCode) {	//Used to handle user error
 		String LanguageCodes[] = {"af", "am", "ar", "az", "be", "bg", "bn", "bs", "ca", "co",
 								  "cs", "cy", "da", "de", "el", "en", "eo", "es", "et", "eu", 
 								  "fa", "fi", "fr", "fy", "ga", "gd", "gl", "gu", "ha", "hi", 
@@ -126,6 +133,10 @@ public class TranslateCommand implements ICommand {
 		}
 		 
 		return false;
+	}
+	
+	public static String getMessage() {	//Static so copy command can access
+		return translatedMessage;
 	}
 	
 }
