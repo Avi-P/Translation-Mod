@@ -43,17 +43,17 @@ public class TranslateCommand implements ICommand {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		// TODO Auto-generated method stub
-		if(SettingParser.toggle == false) {	//Blocks translations from happening
-			TranslationEventHandler.outputMessage("Translations are currently disabled. Enable in Mod Settings");
-			return;
-		}
-		
 		
 		new Thread(() -> {	//New thread to overcome the blocking function when querying the server
 			try {
 
 				String inputLanguage = args[0];
 				String outputLanguage = args[1];
+				
+				if(binarySearch(inputLanguage) == false || binarySearch(outputLanguage) == false) {
+					TranslationEventHandler.outputMessage("Error. Could not translate.");
+					return;
+				}
 				StringBuilder text = new StringBuilder();	//Used to build the string that will be translated
 				
 				for(int i = 2; i <= args.length-1; i++) {
@@ -98,4 +98,34 @@ public class TranslateCommand implements ICommand {
 		return false;
 	}
 
+	private static boolean binarySearch(String languageCode) {
+		String LanguageCodes[] = {"af", "am", "ar", "az", "be", "bg", "bn", "bs", "ca", "co",
+								  "cs", "cy", "da", "de", "el", "en", "eo", "es", "et", "eu", 
+								  "fa", "fi", "fr", "fy", "ga", "gd", "gl", "gu", "ha", "hi", 
+								  "hr", "ht", "hu", "hy", "id", "ig", "is", "it", "iw", "ja", 
+								  "jw", "ka", "kk", "km", "kn", "ko", "ku", "ky", "la", "lb", 
+								  "lo", "lt", "lv", "mg", "mi", "mk", "ml", "mn", "mr", "ms", 
+								  "mt", "my", "ne", "nl", "no", "ny", "pa", "pl", "ps", "pt", 
+								  "ro", "ru", "sd", "si", "sk", "sl", "sm", "sn", "so", "sq", 
+								  "sr", "st", "su", "sv", "sw", "ta", "te", "tg", "th", "tl", 
+								  "tr", "uk", "ur", "uz", "vi", "xh", "yi", "yo", "zu"};
+
+		int mid = 0;
+		int low = 0;
+		int high = LanguageCodes.length-1;
+		
+		 while (high >= low) {
+			 mid = (high + low) / 2;
+		     if (LanguageCodes[mid].compareTo(languageCode) < 0) {
+		   	  	low = mid + 1;
+		     } else if (LanguageCodes[mid].compareTo(languageCode) > 0) {
+		    	 high = mid - 1;
+		     } else {
+		    	 return true; 
+		     }
+		}
+		 
+		return false;
+	}
+	
 }
