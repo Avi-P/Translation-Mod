@@ -63,12 +63,16 @@ public class TranslateCommand implements ICommand {
 				StringBuilder text = new StringBuilder();	//Used to build the string that will be translated
 				
 				for(int i = 2; i <= args.length-1; i++) {
-					text.append(args[i]+" ");
+					if(i != args.length-1) {
+						text.append(args[i]+" ");
+					} else {
+						text.append(args[i]);
+					}
 				}
 				
 				String toBeTranslated = text.toString();	//Final text to be translated
-			
-				translatedMessage = TranslationEventHandler.getHttp().customTranslate(toBeTranslated, inputLanguage, outputLanguage);
+				
+				translatedMessage = TranslationEventHandler.getHttp().customTranslate(inputLanguage, outputLanguage, toBeTranslated);
 				
 				if(translatedMessage.equals("")) {	//This case indicates that nothing should be outputted to client
 					return;

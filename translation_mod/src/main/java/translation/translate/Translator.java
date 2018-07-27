@@ -23,7 +23,7 @@ import com.optimaize.langdetect.text.TextObject;
 import translation.settings.SettingParser;
 
 public class Translator {
-	
+
 	/* 
 	 * These objects are used to perform the Language detection
 	 * and to store the translated message.
@@ -74,7 +74,7 @@ public class Translator {
 	 * Used when user knows what is the input language. Doesn't parse
 	 * string prior to translation.
 	 */
-	public String customTranslate(String text, String inputLang, String outputLang) throws Exception {	
+	public String customTranslate(String inputLang, String outputLang, String text) throws Exception {	
 		
 		if(text.equals("")) {	//Handles empty string being passed
 			return text;
@@ -83,6 +83,7 @@ public class Translator {
 		try {	//Handles any error that happens when requesting to server
 			callUrlAndParseResult(inputLang, outputLang, text);	//Uses highest probability language detected
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "Error. Could not translate.";
 		}
 	
