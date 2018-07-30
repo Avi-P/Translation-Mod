@@ -1,14 +1,10 @@
-/bin/
-
-
-/run/
+bin/
 
 **/build/
 
-**/build/libs/
+**/.settings/
 
-.gradle\
+**/.gradle/
 
-*.bin
+run/
 
-/.recommenders/**

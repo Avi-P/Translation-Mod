@@ -10,3 +10,6 @@ local.properties
 .loadpath
 .recommenders
 .recommenders/
+translation_mod/.project
+translation_mod/.classpath
+*.launch
