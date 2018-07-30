@@ -30,7 +30,7 @@ This mod was made to break the language barrier between players of different cou
 - Settings
   - Hover over the settings name to see what is supported. Don't worry, there is error handling code!
   
- ## Use
+ ## Mod Usage
  Requires Forge
  
  Recommendations
